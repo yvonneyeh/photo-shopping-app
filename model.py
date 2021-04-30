@@ -12,6 +12,7 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
+    username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
@@ -53,15 +54,13 @@ class Transaction(db.Model):
     photo_id = db.Column(db.Integer, db.ForeignKey('photos.photo_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     purchase_date = db.Column(db.DateTime)
+    buy_price = db.Collumn(db.Integer)
     
     user = db.relationship('User', backref='transactions')
     photo = db.relationship('Photo', backref=db.backref('transactions', order_by=photo_id))
-
-    def as_dict(self):
-        return {self.book.title : self.score}
         
     def __repr__(self):
-        return f'<Rating rating_id={self.rating_id} book_id={self.book_id} score={self.score}>'
+        return f'<Transaction trans_id={self.trans_id} photo_id={self.photo_id} ${self.buy_price}>'
 
 
 

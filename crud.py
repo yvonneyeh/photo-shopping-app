@@ -3,10 +3,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # -------------------- USERS -------------------- #
 
-def create_user(email, password):
+def create_user(email, username, password):
     """Create and return a new user."""
 
     user = User(email = email,
+                username = username,
                 password = generate_password_hash(user_password, method='sha256'))
 
     db.session.add(user)
