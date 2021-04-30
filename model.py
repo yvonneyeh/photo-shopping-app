@@ -30,13 +30,10 @@ class Photo(db.Model):
     __tablename__ = "photos"
 
     photo_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     desc = db.Column(db.Text, nullable=True)
     price = db.Column(db.Integer, nullable=True)
     img_url = db.Column(db.String, nullable=False)
-
-    user = db.relationship('User')
 
     def price_str(self):
         """Return price formatted as string $x.xx"""
@@ -45,6 +42,27 @@ class Photo(db.Model):
 
     def __repr__(self):
         return f"<Photo id= {self.photo_id}>"
+
+
+class Transaction(db.Model):
+    """A user's purchased photo."""
+
+    __tablename__ = "transactions"
+
+    trans_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    photo_id = db.Column(db.Integer, db.ForeignKey('photos.photo_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    purchase_date = db.Column(db.DateTime)
+    
+    user = db.relationship('User', backref='transactions')
+    photo = db.relationship('Photo', backref=db.backref('transactions', order_by=photo_id))
+
+    def as_dict(self):
+        return {self.book.title : self.score}
+        
+    def __repr__(self):
+        return f'<Rating rating_id={self.rating_id} book_id={self.book_id} score={self.score}>'
+
 
 
 # -------------------- CONNECT TO DATABASE -------------------- #
