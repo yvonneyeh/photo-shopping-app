@@ -1,0 +1,8 @@
+haters/
+env
+secrets.sh
+*.DS_Store
+*pycache*
+*.sql
+.vscode/
+package-lock.json
