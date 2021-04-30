@@ -18,6 +18,7 @@ class User(db.Model):
 
     photo = db.relationship('Photo')
 
+
     def __repr__(self):
         """Show info about user."""
 
@@ -31,16 +32,22 @@ class Photo(db.Model):
     photo_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     title = db.Column(db.String(100), nullable=False)
+    desc = db.Column(db.Text, nullable=True)
     price = db.Column(db.Integer, nullable=True)
     img_url = db.Column(db.String, nullable=False)
 
     user = db.relationship('User')
 
+    def price_str(self):
+        """Return price formatted as string $x.xx"""
+
+        return "${:.2f}".format(self.price)
+
     def __repr__(self):
         return f"<Photo id= {self.photo_id}>"
 
 
-# ---------- CONNECT TO DATABASE ---------- #
+# -------------------- CONNECT TO DATABASE -------------------- #
 
 
 def connect_to_db(flask_app, db_uri='postgresql:///photos', echo=True):
