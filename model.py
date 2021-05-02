@@ -17,13 +17,14 @@ class User(db.Model):
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
 
-    photo = db.relationship('Photo')
+    transaction = db.relationship('Transaction')
 
 
     def __repr__(self):
         """Show info about user."""
 
         return f"<User_id= {self.user_id} user_name= {self.user_name}>"
+
 
 class Photo(db.Model):
     """A photo listing."""
@@ -35,6 +36,8 @@ class Photo(db.Model):
     desc = db.Column(db.Text, nullable=True)
     price = db.Column(db.Integer, nullable=True)
     img_url = db.Column(db.String, nullable=False)
+
+    transaction = db.relationship('Transaction')
 
     def price_str(self):
         """Return price formatted as string $x.xx"""
@@ -55,7 +58,7 @@ class Transaction(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     purchase_date = db.Column(db.DateTime)
     buy_price = db.Column(db.Integer)
-    purchased = read = db.Column(db.Boolean, default=False)
+    purchased = db.Column(db.Boolean, default=False)
     
     user = db.relationship('User', backref='transactions')
     photo = db.relationship('Photo', backref=db.backref('transactions', order_by=photo_id))
@@ -67,23 +70,29 @@ class Transaction(db.Model):
 
 # -------------------- CONNECT TO DATABASE -------------------- #
 
+# # Call connect_to_db(app, echo=False) to prevent printing out all SQLAlchemy queries 
+# def connect_to_db(flask_app, db_uri='postgresql:///photos', echo=False):
+#     """Connect the database to Flask app."""
+#     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+#     flask_app.config['SQLALCHEMY_ECHO'] = echo
+#     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+#     db.app = flask_app
+#     db.init_app(flask_app)
+#     print('Connected to db!')
+
+# # if __name__ == '__main__':
+# #     from server import app    
+# #     connect_to_db(app)
+# #     db.create_all()
+# #     print('Connected to db!')
+
 
 def connect_to_db(flask_app, db_uri='postgresql:///photos', echo=True):
     """Connect the database to Flask app."""
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     db.app = flask_app
     db.init_app(flask_app)
-
     print('Connected to the db!')
-
-
-if __name__ == '__main__':
-    from server import app    
-    # Call connect_to_db(app, echo=False) to prevent printing out all SQLAlchemy queries 
-    connect_to_db(app)
-    db.create_all()
-    print('Connected to db!')
-

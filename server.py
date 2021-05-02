@@ -29,6 +29,16 @@ def homepage():
 
     return render_template('index.html')
 
+
+# @app.route('/')
+# def homepage():
+#     """Show the homepage."""
+
+#     photos = crud.get_all_photos()
+
+#     return render_template('index.html',
+#                             photos=photos)
+
 # -------------------- PHOTO ROUTES -------------------- #
 
 @app.route('/photos/<int:photo_id>')

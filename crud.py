@@ -58,6 +58,12 @@ def delete_user(user_id):
 
 # -------------------- PHOTOS -------------------- #
 
+def get_all_photos():
+    """Return all photos, sorted alphabetically"""
+
+    return Photo.query.order_by(Photo.title).all()
+    
+
 def get_users_photos(user_id):
     """Query database to find Photo objects purchased by user"""
 
@@ -65,6 +71,7 @@ def get_users_photos(user_id):
                                     & (Transaction.purchased.is_(True))).all()
 
     return photos
+
 
 def get_photo_by_id(photo_id):
 
