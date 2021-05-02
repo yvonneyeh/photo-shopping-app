@@ -104,6 +104,25 @@ def log_in_user():
 
     return redirect('/')
 
+# -------------------- ACCOUNT ROUTES -------------------- #
+
+@app.route("/account")
+def display_account_details():
+    """Display a user's info & purchased photos"""
+
+    # Query database to find Photo objects purchased by user
+    if "user_id" in session:
+        user_id = session.get("user_id")
+        photos = crud.get_users_rated_books(user_id)
+
+        return render_template("account.html",
+                               photos=photos)
+
+    else:
+        flash("You need to be logged in to access that page", 'warning')
+
+        return redirect("/login")
+
 # -------------------- PHOTO ROUTES -------------------- #
 
 @app.route('/photos')

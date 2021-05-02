@@ -58,7 +58,16 @@ def delete_user(user_id):
 
 # -------------------- PHOTOS -------------------- #
 
+def get_users_photos(user_id):
+    """Query database to find Photo objects purchased by user"""
 
+    photos = Transaction.query.filter((Transaction.user_id == user_id)
+                                    & (Transaction.purchased.is_(True))).all()
+
+    return photos
+
+
+# -------------------- APP -------------------- #
 
 if __name__ == '__main__':
     from server import app
