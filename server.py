@@ -94,7 +94,6 @@ def log_in_user():
         if password == user_object.password != None:
             session['username'] = user_object.username
             session['user_id'] = user_object.user_id
-            # print('Logged in!')
             flash('Logged in!', 'success')
         else:
             flash('Incorrect password', 'warning')
@@ -107,8 +106,54 @@ def log_in_user():
 
 # -------------------- PHOTO ROUTES -------------------- #
 
+@app.route('/photos')
+def photos():
+    """View Photos page."""
+
+    return render_template('photos.html')
 
 # -------------------- SHOPPING ROUTES -------------------- #
+
+@app.route('/buy')
+def buy():
+    """View Buy page."""
+
+    return render_template('buy.html')
+
+
+@app.route('/sell')
+def sell():
+    """View Sell page."""
+
+    return render_template('sell.html')
+
+
+@app.route('/cart')
+def shopping_cart():
+    """View Shopping Cart page."""
+
+    return render_template('cart.html')
+
+# -------------------- ACCOUNT ROUTES -------------------- #
+
+@app.route('/account')
+def account():
+    """View Account page."""
+
+    return render_template('account.html')
+
+# -------------------- AJAX / JSON ROUTES -------------------- #
+
+@app.route("/user/loggedin")
+def is_user_logged_in():
+    """Check if user is logged in"""
+
+    if "user_id" in session:
+        return "true"
+
+    else:
+        return "false"
+
 
 
 # -------------------- RUN -------------------- #

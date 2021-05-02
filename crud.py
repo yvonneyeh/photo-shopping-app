@@ -28,10 +28,22 @@ def get_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
 
+def get_user_by_username(username):
+    """Return user given their username"""
+
+    return User.query.filter(User.username == username).first() 
+
+
 def get_user_by_id(user_id):
     """Return user given their ID"""
 
     return User.query.filter(User.user_id == user_id).first() 
+
+
+def get_user_by_email_id(email, username):
+
+    return User.query.filter((User.email == email) |
+                             (User.username == username)).all()
 
 
 def delete_user(user_id):
