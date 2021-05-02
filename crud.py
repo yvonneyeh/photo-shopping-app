@@ -66,6 +66,11 @@ def get_users_photos(user_id):
 
     return photos
 
+def get_photo_by_id(photo_id):
+
+    return Photo.query.filter(Photo.photo_id == photo_id).first()
+
+
 
 # -------------------- APP -------------------- #
 

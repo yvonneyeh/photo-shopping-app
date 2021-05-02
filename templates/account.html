@@ -1,1 +1,36 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}Completed Books{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+
+<!-- Photo Grid -->
+<div class="container">
+
+  <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">My Photo Library:</h1>
+
+  <hr class="mt-2 mb-5">
+
+  <div class="row text-center text-lg-left">
+    {% if photos %}
+    {% for photo in photos %}
+    <div class="col-lg-3 col-md-4 col-6">
+      <a href="/photos/{{transaction.photo.photo_id}}" class="d-block mb-4 h-100">
+            <img class="img-fluid img-thumbnail" src="{{transaction.photo.cover_path}}" alt="Cover image of {{ transaction.photo.title }}, links to photo details page">
+          </a>
+    </div>
+    {% endfor %}
+
+    {% else %}
+          <p><h4>No purchased photos! Find photos <a href="/photos">here</a>.</h4></p>
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}

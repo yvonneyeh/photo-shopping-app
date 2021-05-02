@@ -29,6 +29,27 @@ def homepage():
 
     return render_template('index.html')
 
+# -------------------- PHOTO ROUTES -------------------- #
+
+@app.route('/photos/<int:photo_id>')
+def show_photo(photo_id):
+    """Show details for a photo."""
+
+    photo = crud.get_photo_by_id(photo_id)
+    # title = crud.get_photo_title_by_id(photo_id)
+    # desc = 
+    # price = 
+    # img_url = 
+
+    return render_template("photo_details.html",
+                            photo=photo)
+
+    # return render_template("photo_details.html",
+    #                         photo=photo,
+    #                         title=title,
+    #                         desc=desc,
+    #                         price=price,
+    #                         img_url=img_url)
 
 # -------------------- REGISTRATION ROUTES -------------------- #
 
@@ -113,7 +134,7 @@ def display_account_details():
     # Query database to find Photo objects purchased by user
     if "user_id" in session:
         user_id = session.get("user_id")
-        photos = crud.get_users_rated_books(user_id)
+        photos = crud.get_users_photos(user_id)
 
         return render_template("account.html",
                                photos=photos)
