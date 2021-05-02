@@ -1,5 +1,6 @@
 """Server for photo shopping app."""
 
+import os
 import crud
 from model import connect_to_db, User, Photo, Transaction
 from flask import Flask, jsonify, render_template, request, flash, session, redirect, url_for

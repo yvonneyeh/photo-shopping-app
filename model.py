@@ -54,7 +54,7 @@ class Transaction(db.Model):
     photo_id = db.Column(db.Integer, db.ForeignKey('photos.photo_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     purchase_date = db.Column(db.DateTime)
-    buy_price = db.Collumn(db.Integer)
+    buy_price = db.Column(db.Integer)
     
     user = db.relationship('User', backref='transactions')
     photo = db.relationship('Photo', backref=db.backref('transactions', order_by=photo_id))
