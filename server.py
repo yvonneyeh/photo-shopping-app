@@ -51,13 +51,12 @@ def homepage():
 def all_photos_page():
     """View all photos."""
 
-    if session['logged_in'] == False:
+    if "user_id" in session:
+        photos = crud.get_photos()
+        return render_template('photos.html', photos=photos)
+    else:
         flash('Please login or create an account.')
         return render_template('login.html')
-
-    photos = crud.get_photos()
-
-    return render_template('photos.html', photos=photos)
 
 
 @app.route('/photos/<int:photo_id>')
@@ -180,6 +179,20 @@ def photos():
     """View Photos page."""
 
     return render_template('photos.html')
+
+@app.route('/api/photos', methods=["POST"])
+def upload_photo():
+    """Upload a photo."""
+
+    title = request.form.get('title')
+    desc = request.form.get('desc')
+    price = request.form.get('price')
+    img_url = request.form.get('img_url')
+
+    post = crud.create_photo(photo_id, title, desc, price, img_url)
+
+    return jsonify({'status': 'ok'})
+
 
 # -------------------- SHOPPING ROUTES -------------------- #
 

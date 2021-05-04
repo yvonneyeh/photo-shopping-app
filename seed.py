@@ -12,6 +12,16 @@ import server
 os.system('dropdb photos')
 os.system('createdb photos')
 
-model.connect_to_db(server.app)
-model.db.create_all()
-# More code will go here
+
+#---------------------------------------------------------------------#
+
+if __name__ == '__main__':
+    model.connect_to_db(server.app, echo=False)
+
+    # Create tables if not already created. Delete all existing entries in tables.
+    model.db.create_all()
+    print("Tables created. Deleting all rows and creating new seed data.")
+
+    # Seed sample data into the database
+
+    print("Sample data seeded")

@@ -58,6 +58,22 @@ def delete_user(user_id):
 
 # -------------------- PHOTOS -------------------- #
 
+def create_photo(photo_id, title, desc, price, img_url):
+    """Create and return a new photo."""
+
+    photo = Photo(
+            photo_id = photo_id,
+            title = title,
+            desc = desc,
+            price = price,
+            img_url = img_url)
+
+    db.session.add(photo)
+    db.session.commit()
+
+    return photo
+
+
 def get_photos():
     """Return all photos."""
 
