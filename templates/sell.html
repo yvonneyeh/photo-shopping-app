@@ -1,1 +1,32 @@
 {% extends 'base.html' %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="form-group">
+        <br>
+        <h1>Upload an image</h1>
+        <br>
+        <div class="container-form-upload">
+            <form method="POST" action="/upload" id="form-img-upload" enctype="multipart/form-data">
+                <p>
+                    <label for="new-img-upload">Select a file: </label>
+                    <input type="file" name="new-img-upload" id="new-img-upload" required>
+                </p>
+                <p>
+                    <label for="new-img-name">Photo Title: </label>
+                    <input type="text" class="form-control" name="new-img-title" id="new-img-title" required>
+                </p>
+                <p>
+                    <label for="new-img-desc">Photo Description: </label>
+                    <input type="text" class="form-control" name="new-img-desc" id="new-img-desc" required>
+                </p>
+                <p>
+                    <label for="new-img-price">Price: </label>
+                    <input type="text" class="form-control" name="new-img-price" id="new-img-price" required>
+                </p>
+                <button type="submit" class="btn btn-primary" id="img-submit">Submit</button> 
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock body %}

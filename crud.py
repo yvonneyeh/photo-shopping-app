@@ -3,12 +3,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # -------------------- USERS -------------------- #
 
-def create_user(email, username, password):
+def create_user(email, username, password, first_name, last_name):
     """Create and return a new user."""
 
     user = User(email = email,
                 username = username,
-                password = generate_password_hash(user_password, method='sha256'))
+                password = generate_password_hash(password, method='sha256'),
+                first_name = first_name,
+                last_name = last_name)
 
     db.session.add(user)
     db.session.commit()
@@ -103,7 +105,7 @@ def get_photo_by_id(photo_id):
 
 # -------------------- APP -------------------- #
 
-if __name__ == '__main__':
-    from server import app
-    connect_to_db(app)
-    db.create_all()
+# if __name__ == '__main__':
+#     from server import app
+#     connect_to_db(app)
+#     db.create_all()

@@ -23,7 +23,7 @@ class User(db.Model):
     def __repr__(self):
         """Show info about user."""
 
-        return f"<User_id= {self.user_id} user_name= {self.user_name}>"
+        return f"<User_id= {self.user_id} username= {self.username}>"
 
 
 class Photo(db.Model):

@@ -190,7 +190,7 @@ def show_photo(photo_id):
 
 
 @app.route('/api/photos', methods=["POST"])
-def upload_photo():
+def api_photo():
     """Upload a photo."""
 
     title = request.form.get('title')
@@ -202,6 +202,10 @@ def upload_photo():
 
     return jsonify({'status': 'ok'})
 
+# -------------------- PHOTO UPLOAD ROUTES -------------------- #
+
+
+
 
 # -------------------- SHOPPING ROUTES -------------------- #
 
@@ -209,14 +213,50 @@ def upload_photo():
 def buy():
     """View Buy page."""
 
-    return render_template('buy.html')
+    if "user_id" in session:
+        user_id = session.get("user_id")
+        
+        return render_template('buy.html')
+
+    else:
+        flash("You must be logged in to access that page", 'warning')
+
+        return redirect("/login")
 
 
 @app.route('/sell')
 def sell():
     """View Sell page."""
 
-    return render_template('sell.html')
+    if "user_id" in session:
+        user_id = session.get("user_id")
+        
+        return render_template('sell.html')
+
+    else:
+        flash("You must be logged in to access that page", 'warning')
+
+        return redirect("/login")
+    
+
+
+@app.route('/upload', methods=['POST'])
+def upload_photo():
+    """Uploads user's image to Cloudinary"""
+
+    file = request.files.get('new-img-upload')
+    title = request.form['new-img-title']
+    desc = request.form['new-img-desc']
+    price = request.form['new-img-price']
+
+    response = cloudinary.uploader.upload(file)
+    img_url = response['secure_url']
+
+    new_photo = create_photo(title=title, desc=desc, price=price, img_url=img_url)
+    
+    if new_photo:
+        flash("Image uploaded")
+        return redirect('/')
 
 
 @app.route('/cart')
