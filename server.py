@@ -11,15 +11,21 @@ import cloudinary.uploader
 import cloudinary.api
 
 
-
 DATABASE_URL = os.environ['DATABASE_URL']
 SECRET_KEY = os.environ['SECRET_KEY']
+CLOUD_NAME = os.environ['CLOUD_NAME']
+CLOUD_API_KEY = os.environ['CLOUD_API_KEY']
 CLOUD_API_SECRET = os.environ['CLOUD_API_SECRET']
-
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 app.jinja_env.undefined = StrictUndefined
+
+cloudinary.config( 
+    cloud_name = CLOUD_NAME, 
+    api_key = CLOUD_API_KEY, 
+    api_secret =  CLOUD_API_SECRET
+)
 
 # -------------------- HOMEPAGE -------------------- #
 
@@ -150,7 +156,7 @@ def display_account_details():
                                photos=photos)
 
     else:
-        flash("You need to be logged in to access that page", 'warning')
+        flash("You must be logged in to access that page", 'warning')
 
         return redirect("/login")
 
