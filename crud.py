@@ -58,6 +58,12 @@ def delete_user(user_id):
 
 # -------------------- PHOTOS -------------------- #
 
+def get_photos():
+    """Return all photos."""
+
+    return Photo.query.all()
+
+
 def get_all_photos():
     """Return all photos, sorted alphabetically"""
 

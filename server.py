@@ -47,6 +47,19 @@ def homepage():
 
 # -------------------- PHOTO ROUTES -------------------- #
 
+@app.route('/photos')
+def all_photos_page():
+    """View all photos."""
+
+    if session['logged_in'] == False:
+        flash('Please login or create an account.')
+        return render_template('login.html')
+
+    photos = crud.get_photos()
+
+    return render_template('photos.html', photos=photos)
+
+
 @app.route('/photos/<int:photo_id>')
 def show_photo(photo_id):
     """Show details for a photo."""
