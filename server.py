@@ -14,15 +14,17 @@ import stripe
 
 DATABASE_URL = os.environ['DATABASE_URL']
 SECRET_KEY = os.environ['SECRET_KEY']
+
 CLOUD_NAME = os.environ['CLOUD_NAME']
 CLOUD_API_KEY = os.environ['CLOUD_API_KEY']
 CLOUD_API_SECRET = os.environ['CLOUD_API_SECRET']
 
+# STRIPE_SECRET_KEY: os.environ['STRIPE_SECRET_KEY']
+# STRIPE_PUBLIC_KEY: os.environ['STRIPE_PUBLIC_KEY']
 stripe_keys = {
   'stripe_secret_key': os.environ['STRIPE_SECRET_KEY'],
-  'publishable_key': os.environ['PUBLISHABLE_KEY']
+  'publishable_key': os.environ['STRIPE_PUBLIC_KEY']
 }
-
 stripe.api_key = stripe_keys['stripe_secret_key']
 
 app = Flask(__name__)
