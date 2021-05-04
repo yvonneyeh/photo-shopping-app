@@ -9,6 +9,7 @@ from datetime import datetime
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import stripe
 
 
 DATABASE_URL = os.environ['DATABASE_URL']
@@ -16,6 +17,13 @@ SECRET_KEY = os.environ['SECRET_KEY']
 CLOUD_NAME = os.environ['CLOUD_NAME']
 CLOUD_API_KEY = os.environ['CLOUD_API_KEY']
 CLOUD_API_SECRET = os.environ['CLOUD_API_SECRET']
+
+stripe_keys = {
+  'stripe_secret_key': os.environ['STRIPE_SECRET_KEY'],
+  'publishable_key': os.environ['PUBLISHABLE_KEY']
+}
+
+stripe.api_key = stripe_keys['stripe_secret_key']
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -45,39 +53,7 @@ def homepage():
 #     return render_template('index.html',
 #                             photos=photos)
 
-# -------------------- PHOTO ROUTES -------------------- #
 
-@app.route('/photos')
-def all_photos_page():
-    """View all photos."""
-
-    if "user_id" in session:
-        photos = crud.get_photos()
-        return render_template('photos.html', photos=photos)
-    else:
-        flash('Please login or create an account.')
-        return render_template('login.html')
-
-
-@app.route('/photos/<int:photo_id>')
-def show_photo(photo_id):
-    """Show details for a photo."""
-
-    photo = crud.get_photo_by_id(photo_id)
-    # title = crud.get_photo_title_by_id(photo_id)
-    # desc = 
-    # price = 
-    # img_url = 
-
-    return render_template("photo_details.html",
-                            photo=photo)
-
-    # return render_template("photo_details.html",
-    #                         photo=photo,
-    #                         title=title,
-    #                         desc=desc,
-    #                         price=price,
-    #                         img_url=img_url)
 
 # -------------------- REGISTRATION ROUTES -------------------- #
 
@@ -175,10 +151,41 @@ def display_account_details():
 # -------------------- PHOTO ROUTES -------------------- #
 
 @app.route('/photos')
-def photos():
-    """View Photos page."""
+def all_photos_page():
+    """View all photos."""
+    
+    photos = crud.get_photos()
+    
+    return render_template('photos.html', photos=photos)
 
-    return render_template('photos.html')
+    # if "user_id" in session:
+    #     photos = crud.get_photos()
+    #     return render_template('photos.html', photos=photos)
+    # else:
+    #     flash('Please login or create an account.')
+    #     return render_template('login.html')
+
+
+@app.route('/photos/<int:photo_id>')
+def show_photo(photo_id):
+    """Show details for a photo."""
+
+    photo = crud.get_photo_by_id(photo_id)
+    # title = crud.get_photo_title_by_id(photo_id)
+    # desc = 
+    # price = 
+    # img_url = 
+
+    return render_template("photo_details.html",
+                            photo=photo)
+
+    # return render_template("photo_details.html",
+    #                         photo=photo,
+    #                         title=title,
+    #                         desc=desc,
+    #                         price=price,
+    #                         img_url=img_url)
+
 
 @app.route('/api/photos', methods=["POST"])
 def upload_photo():
