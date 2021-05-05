@@ -35,7 +35,7 @@ class Photo(db.Model):
     photo_id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(100), nullable=False)
     desc = db.Column(db.Text, nullable=True)
-    price = db.Column(db.Integer, nullable=True)
+    price = db.Column(db.Float, nullable=True)
     img_url = db.Column(db.String, nullable=False)
 
     transaction = db.relationship('Transaction')
@@ -58,11 +58,11 @@ class Transaction(db.Model):
     photo_id = db.Column(db.Integer, db.ForeignKey('photos.photo_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     purchase_date = db.Column(db.DateTime)
-    buy_price = db.Column(db.Integer)
+    buy_price = db.Column(db.Float)
     purchased = db.Column(db.Boolean, default=False)
     
-    user = db.relationship('User', backref='transactions')
-    photo = db.relationship('Photo', backref=db.backref('transactions', order_by=photo_id))
+    # user = db.relationship('User', backref='transactions')
+    # photo = db.relationship('Photo', backref=db.backref('transactions', order_by=photo_id))
         
     def __repr__(self):
         return f'<Transaction trans_id={self.trans_id} photo_id={self.photo_id} ${self.buy_price}>'

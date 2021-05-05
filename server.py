@@ -60,6 +60,23 @@ def homepage():
 
     return render_template('index.html')
 
+# @app.route('/')
+# def homepage():
+#     session = stripe.checkout.Session.create(
+#         payment_method_types=['card'],
+#         line_items=[{
+#             'price': 'price_1InT6KKZcbzeiZVtW5WQSr2k',
+#             'quantity': 999,
+#         }],
+#         mode='payment',
+#         success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+#         cancel_url=url_for('index', _external=True),
+#     )
+#     return render_template('index.html', 
+#         checkout_session_id=session['id'], 
+#         checkout_public_key=app.config['STRIPE_PUBLIC_KEY']
+#     )
+
 
 # @app.route('/')
 # def homepage():
@@ -69,8 +86,6 @@ def homepage():
 
 #     return render_template('index.html',
 #                             photos=photos)
-
-
 
 # -------------------- REGISTRATION ROUTES -------------------- #
 
@@ -238,15 +253,17 @@ def buy():
 def sell():
     """View Sell page."""
 
-    if "user_id" in session:
-        user_id = session.get("user_id")
+    return render_template('sell.html')
+
+    # if "user_id" in session:
+    #     user_id = session.get("user_id")
         
-        return render_template('sell.html')
+    #     return render_template('sell.html')
 
-    else:
-        flash("You must be logged in to access that page", 'warning')
+    # else:
+    #     flash("You must be logged in to access that page", 'warning')
 
-        return redirect("/login")
+    #     return redirect("/login")
     
 
 
@@ -262,7 +279,7 @@ def upload_photo():
     response = cloudinary.uploader.upload(file)
     img_url = response['secure_url']
 
-    new_photo = create_photo(title=title, desc=desc, price=price, img_url=img_url)
+    new_photo = crud.create_photo(title=title, desc=desc, price=price, img_url=img_url)
     
     if new_photo:
         flash("Image uploaded")
@@ -280,7 +297,7 @@ def stripe_pay():
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=[{
-            'price': 'YOUR_PRODUCT_PRICE_ID',
+            'price': 'price_1InT6KKZcbzeiZVtW5WQSr2k',
             'quantity': 1,
         }],
         mode='payment',

@@ -8,10 +8,10 @@ from datetime import datetime
 from model import User, Photo, Transaction
 from server import app, connect_to_db
 import crud
-from app import db
+from config import db
 
-# os.system('dropdb photos')
-# os.system('createdb photos')
+os.system('dropdb photos')
+os.system('createdb photos')
 
 def reset_db():
     """Drop existing database and create new one with current model"""

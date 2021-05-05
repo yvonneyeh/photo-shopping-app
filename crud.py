@@ -1,6 +1,6 @@
 from config import db
 from model import User, Photo, Transaction
-from werkzeug.security import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
 
 # -------------------- USERS -------------------- #
 
@@ -9,7 +9,8 @@ def create_user(email, username, password, first_name, last_name):
 
     user = User(email = email,
                 username = username,
-                password = generate_password_hash(password, method='sha256'),
+                password = password,
+                # password = generate_password_hash(password, method='sha256'),
                 first_name = first_name,
                 last_name = last_name)
 
@@ -61,11 +62,10 @@ def delete_user(user_id):
 
 # -------------------- PHOTOS -------------------- #
 
-def create_photo(photo_id, title, desc, price, img_url):
+def create_photo(title, desc, price, img_url):
     """Create and return a new photo."""
 
     photo = Photo(
-            photo_id = photo_id,
             title = title,
             desc = desc,
             price = price,
