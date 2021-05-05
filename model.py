@@ -2,6 +2,7 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+# from server import app 
 
 db = SQLAlchemy()
 
@@ -88,11 +89,25 @@ class Transaction(db.Model):
 # #     print('Connected to db!')
 
 
-def connect_to_db(flask_app, db_uri='postgresql:///photos', echo=True):
-    """Connect the database to Flask app."""
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-    flask_app.config['SQLALCHEMY_ECHO'] = echo
-    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    db.app = flask_app
-    db.init_app(flask_app)
-    print('Connected to the db!')
+# def connect_to_db(flask_app, db_uri='postgresql:///photos', echo=True):
+#     """Connect the database to Flask app."""
+#     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+#     flask_app.config['SQLALCHEMY_ECHO'] = echo
+#     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+#     db.app = flask_app
+#     db.init_app(flask_app)
+#     print('Connected to the db!')
+
+# def connect_to_db(app, db_uri='postgresql:///photos', echo=True):
+#     """Connect the database to Flask app."""
+#     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+#     app.config['SQLALCHEMY_ECHO'] = echo
+#     # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+#     db.init_app(app)
+#     print('Connected to the db!')
+
+# if __name__ == '__main__':
+#     # from server import app    
+#     connect_to_db(app, echo=False)
+#     db.create_all()
+#     print('Connected to db!')

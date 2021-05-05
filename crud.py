@@ -1,4 +1,4 @@
-from model import db, User, Photo, connect_to_db
+from model import db, User, Photo
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # -------------------- USERS -------------------- #

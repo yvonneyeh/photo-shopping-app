@@ -2,7 +2,7 @@
 
 import os
 import crud
-from model import connect_to_db, User, Photo, Transaction
+from model import User, Photo, Transaction, db
 from flask import Flask, jsonify, render_template, request, flash, session, redirect, url_for
 from jinja2 import StrictUndefined
 from datetime import datetime
@@ -30,6 +30,13 @@ stripe.api_key = stripe_keys['stripe_secret_key']
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 app.jinja_env.undefined = StrictUndefined
+db_uri='postgresql:///photos'
+echo = False
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+app.config['SQLALCHEMY_ECHO'] = echo
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+db.init_app(app)
+db.create_all()
 
 cloudinary.config( 
     cloud_name = CLOUD_NAME, 
@@ -142,8 +149,7 @@ def display_account_details():
         user_id = session.get("user_id")
         photos = crud.get_users_photos(user_id)
 
-        return render_template("account.html",
-                               photos=photos)
+        return render_template("account.html", photos=photos)
 
     else:
         flash("You must be logged in to access that page", 'warning')
@@ -201,10 +207,6 @@ def api_photo():
     post = crud.create_photo(photo_id, title, desc, price, img_url)
 
     return jsonify({'status': 'ok'})
-
-# -------------------- PHOTO UPLOAD ROUTES -------------------- #
-
-
 
 
 # -------------------- SHOPPING ROUTES -------------------- #
@@ -343,9 +345,15 @@ def is_user_logged_in():
     else:
         return "false"
 
-
-
 # -------------------- RUN -------------------- #
+
+def connect_to_db(app, db_uri='postgresql:///photos', echo=True):
+    """Connect the database to Flask app."""
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    app.config['SQLALCHEMY_ECHO'] = echo
+    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    db.init_app(app)
+    print('Connected to the db!')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
