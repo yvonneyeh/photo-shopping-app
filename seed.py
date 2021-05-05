@@ -37,7 +37,22 @@ def seed_users():
 
 photos_in_db = []
 titles = ['Blue Doge', 'Think Doge', 'Yellow Doge', 'Relax Doge', 'Black Doge', 'Happy Doge']
-img_url = ['https://res.cloudinary.com/yvonneyeh/image/upload/v1620240466/m6vksxzmpkabkijyjf1i.jpg']
+img_url = ['https://res.cloudinary.com/yvonneyeh/image/upload/v1620240466/m6vksxzmpkabkijyjf1i.jpg',
+        'https://res.cloudinary.com/yvonneyeh/image/upload/v1620242245/f49ifnpfjfsiptvvirpt.jpg',
+        'https://res.cloudinary.com/yvonneyeh/image/upload/v1620242287/zbmbiojelc9qpoaekhbk.jpg',
+        'https://res.cloudinary.com/yvonneyeh/image/upload/v1620242312/w97l5kqxuhknosubbj7f.jpg',
+        'https://res.cloudinary.com/yvonneyeh/image/upload/v1620242331/ah7m6qz0y8pipwxw8hwv.jpg',
+        'https://res.cloudinary.com/yvonneyeh/image/upload/v1620242351/hm46f2n24ts0pi8vv8sl.jpg']
+
+def seed_photos():
+    for i in range(5):
+        title = titles[i]
+        desc = 'Doge Photo'
+        price = 99.99
+        img_url = img_url[i]
+        new_photo = create_photo(title, desc, price, img_url)
+        photos_in_db.append(new_photo)
+    print(photos_in_db)
 
 
 #---------------------------------------------------------------------#
