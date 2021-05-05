@@ -2,7 +2,7 @@
 
 import os
 import crud
-from model import User, Photo, Transaction, db
+from model import User, Photo, Transaction
 from flask import Flask, jsonify, render_template, request, flash, session, redirect, url_for
 from jinja2 import StrictUndefined
 from datetime import datetime
@@ -10,6 +10,7 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import stripe
+from config import db
 
 
 DATABASE_URL = os.environ['DATABASE_URL']
@@ -27,6 +28,11 @@ stripe_keys = {
 }
 stripe.api_key = stripe_keys['stripe_secret_key']
 
+# app = create_app()
+# db = SQLAlchemy()
+# db.init_app(app)
+
+# def create_app():
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
 app.jinja_env.undefined = StrictUndefined
@@ -36,7 +42,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SQLALCHEMY_ECHO'] = echo
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
-db.create_all()
+    # return app
+
+# db.create_all()
 
 cloudinary.config( 
     cloud_name = CLOUD_NAME, 
@@ -356,4 +364,5 @@ def connect_to_db(app, db_uri='postgresql:///photos', echo=True):
     print('Connected to the db!')
 
 if __name__ == '__main__':
+    # app = create_app()
     app.run(host='0.0.0.0', debug=True)

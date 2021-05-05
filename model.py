@@ -2,9 +2,9 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-# from server import app 
+from config import db
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
 class User(db.Model):
     """An app user."""

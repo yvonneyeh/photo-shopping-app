@@ -4,10 +4,11 @@ import os
 import json
 from random import choice, randint
 from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
+from model import User, Photo, Transaction
+from server import app, connect_to_db
 import crud
-import model
-import server
+from app import db
 
 # os.system('dropdb photos')
 # os.system('createdb photos')
@@ -16,9 +17,10 @@ def reset_db():
     """Drop existing database and create new one with current model"""
     os.system('dropdb photos')
     os.system('createdb photos')
-
-    model.connect_to_db(server.app, echo=False)
-    model.db.create_all()
+    
+    with app.app_context():
+        connect_to_db(app, echo=False)
+        db.create_all()
 
     print('Reset db complete!')
 
@@ -36,13 +38,16 @@ def seed_users():
 #---------------------------------------------------------------------#
 
 if __name__ == '__main__':
-    model.connect_to_db(server.app, echo=False)
+    # app = server.create_app()
+    # app.run(host='0.0.0.0', debug=True)
+    # connect_to_db(app, echo=False)
 
     # Create tables if not already created. Delete all existing entries in tables.
-    model.db.create_all()
-    print("Tables created. Deleting all rows and creating new seed data.")
+    with app.app_context():
+        db.create_all()
+        print("Tables created. Deleting all rows and creating new seed data.")
 
-    # Seed sample data into the database
-    seed_users()
+        # Seed sample data into the database
+        seed_users()
 
     print("Sample data seeded")
