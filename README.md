@@ -70,7 +70,7 @@ pip3 install -r requirements.txt
 ```
 
 3. Create environmental variables to hold your API keys in a `secrets.sh` file:
-```
+```shell
 export DATABASE_URL='{DATABASE_URL}'
 export SECRET_KEY='{SECRET_KEY}'
 export CLOUD_NAME='{CLOUD_NAME}'
@@ -94,4 +94,8 @@ python3 server.py
 ```
 
 ## <a name="Future"></a>Future Features
-- View as Admin or Client
+- Admin and Client privileges for different views
+- Only admins can delete photos
+- Additional shopping cart functionality such as checking out with multiple items
+- Search functionality
+- Ability to add discounts to items
