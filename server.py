@@ -20,8 +20,8 @@ CLOUD_NAME = os.environ['CLOUD_NAME']
 CLOUD_API_KEY = os.environ['CLOUD_API_KEY']
 CLOUD_API_SECRET = os.environ['CLOUD_API_SECRET']
 
-# STRIPE_SECRET_KEY: os.environ['STRIPE_SECRET_KEY']
-# STRIPE_PUBLIC_KEY: os.environ['STRIPE_PUBLIC_KEY']
+STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
+STRIPE_PUBLIC_KEY = os.environ['STRIPE_PUBLIC_KEY']
 stripe_keys = {
   'stripe_secret_key': os.environ['STRIPE_SECRET_KEY'],
   'stripe_public_key': os.environ['STRIPE_PUBLIC_KEY']
@@ -54,28 +54,28 @@ cloudinary.config(
 
 # -------------------- HOMEPAGE -------------------- #
 
-@app.route('/')
-def homepage():
-    """Show the homepage."""
-
-    return render_template('index.html')
-
 # @app.route('/')
 # def homepage():
-#     session = stripe.checkout.Session.create(
-#         payment_method_types=['card'],
-#         line_items=[{
-#             'price': 'price_1InT6KKZcbzeiZVtW5WQSr2k',
-#             'quantity': 999,
-#         }],
-#         mode='payment',
-#         success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
-#         cancel_url=url_for('index', _external=True),
-#     )
-#     return render_template('index.html', 
-#         checkout_session_id=session['id'], 
-#         checkout_public_key=app.config['STRIPE_PUBLIC_KEY']
-#     )
+#     """Show the homepage."""
+
+#     return render_template('index.html')
+
+@app.route('/')
+def index():
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price': 'price_1InT6KKZcbzeiZVtW5WQSr2k',
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=url_for('index', _external=True),
+    )
+    return render_template('index.html', 
+        checkout_session_id = session['id'], 
+        checkout_public_key = STRIPE_PUBLIC_KEY
+    )
 
 
 # @app.route('/')
@@ -186,8 +186,21 @@ def all_photos_page():
     """View all photos."""
     
     photos = crud.get_photos()
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price': 'price_1InT6KKZcbzeiZVtW5WQSr2k',
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=url_for('index', _external=True),
+    )
     
-    return render_template('photos.html', photos=photos)
+    return render_template('photos.html', photos=photos, 
+        checkout_session_id = session['id'], 
+        checkout_public_key = STRIPE_PUBLIC_KEY
+    )
 
     # if "user_id" in session:
     #     photos = crud.get_photos()
@@ -282,7 +295,7 @@ def upload_photo():
     new_photo = crud.create_photo(title=title, desc=desc, price=price, img_url=img_url)
     
     if new_photo:
-        flash("Image uploaded")
+        flash("Image uploaded!", "success")
         return redirect('/')
 
 
@@ -291,6 +304,7 @@ def shopping_cart():
     """View Shopping Cart page."""
 
     return render_template('cart.html')
+
 
 @app.route('/stripe_pay')
 def stripe_pay():
@@ -308,6 +322,7 @@ def stripe_pay():
         'checkout_session_id': session['id'], 
         'checkout_public_key': stripe_keys['stripe_public_key']
     }
+
 
 @app.route('/thanks')
 def thanks():

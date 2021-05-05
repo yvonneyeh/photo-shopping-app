@@ -107,12 +107,10 @@
             </div>
         </div>
 <script src="https://js.stripe.com/v3/"></script>
-{#
-    <script>
-        const checkout_public_key = '{{checkout_public_key}}';
-        const checkout_session_id = '{{checkout_session_id}}';
-    </script>
-#}
+<script>
+    const checkout_public_key = '{{checkout_public_key}}';
+    const checkout_session_id = '{{checkout_session_id}}';
+</script>
 <script src="{{ url_for('static', filename='js/stripe.js') }}"></script>
 {% endblock body %}
 {% block footer %}

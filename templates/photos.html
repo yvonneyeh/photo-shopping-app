@@ -1,1 +1,44 @@
 {% extends 'base.html' %}
+
+{% block body %}
+
+
+<!-- Book Grid -->
+<div class="container">
+<h3 class="font-weight-light text-center text-lg-left mt-4 mb-0">Photo Inventory</h3>
+<hr class="mt-2 mb-5">
+<form method="POST" action="/update-inventory" id="form-update-inventory">
+    {% if photos %}
+    <table>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Purchase</th>
+        </tr>
+        {% for photo in photos %}
+        <tr data-photo-id="{{ photo.photo_id }}">
+            <td><img src="{{ photo.img_url }}" height="150"></td>
+            <td class="photo-name"><input type="text" class="form-control" value="{{ photo.title }}"></td> 
+            <td class="photo-price"><input type="text" class="form-control" value="{{ '%.2f'|format(photo.price) }}"></td>
+            <td class="edit-options">
+                <button type="button" class="btn btn-primary" id="checkout-button">Buy Now</button>
+                <button type="button" class="btn btn-primary" id="checkout-button">Add to Cart</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p><h4>No photos in the inventory. Click <a href="/sell">Sell</a> to list a photo for sale.</h4></p>
+    {% endif %}
+    </form>
+    </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const checkout_public_key = '{{checkout_public_key}}';
+    const checkout_session_id = '{{checkout_session_id}}';
+</script>
+<script src="{{ url_for('static', filename='js/stripe.js') }}"></script>
+{% endblock %}
