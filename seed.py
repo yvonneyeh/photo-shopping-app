@@ -35,6 +35,11 @@ def seed_users():
     users_in_db.append(yy)
     print(users_in_db)
 
+photos_in_db = []
+titles = ['Blue Doge', 'Think Doge', 'Yellow Doge', 'Relax Doge', 'Black Doge', 'Happy Doge']
+img_url = ['https://res.cloudinary.com/yvonneyeh/image/upload/v1620240466/m6vksxzmpkabkijyjf1i.jpg']
+
+
 #---------------------------------------------------------------------#
 
 if __name__ == '__main__':

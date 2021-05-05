@@ -62,6 +62,7 @@ cloudinary.config(
 
 @app.route('/')
 def index():
+    photos = crud.get_photos()
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=[{
@@ -72,7 +73,7 @@ def index():
         success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
         cancel_url=url_for('index', _external=True),
     )
-    return render_template('index.html', 
+    return render_template('index.html', photos=photos,
         checkout_session_id = session['id'], 
         checkout_public_key = STRIPE_PUBLIC_KEY
     )
@@ -196,7 +197,7 @@ def all_photos_page():
         success_url=url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
         cancel_url=url_for('index', _external=True),
     )
-    
+
     return render_template('photos.html', photos=photos, 
         checkout_session_id = session['id'], 
         checkout_public_key = STRIPE_PUBLIC_KEY
@@ -296,7 +297,7 @@ def upload_photo():
     
     if new_photo:
         flash("Image uploaded!", "success")
-        return redirect('/')
+        return redirect('/photos')
 
 
 @app.route('/cart')

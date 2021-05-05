@@ -16,7 +16,8 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="carousel slide my-4" id="carouselIndicators" data-ride="carousel">
-                        <ol class="carousel-indicators">
+                        
+                        <!-- <ol class="carousel-indicators">
                             <li class="active" data-target="#carouselIndicators" data-slide-to="0"></li>
                             <li data-target="#carouselIndicators" data-slide-to="1"></li>
                             <li data-target="#carouselIndicators" data-slide-to="2"></li>
@@ -33,79 +34,36 @@
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="sr-only">Next</span>
                         </a>
-                    </div>
+                    </div> -->
 
                     
 
                     <div class="row">
+                        {% if photos %}
+                        {% for photo in photos %}
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="card h-100">
-                                <a href="#!"><img class="card-img-top" src="/static/img/doge0.jpg" alt="..." /></a>
+                                <a href="#!"><img class="card-img-top" src="{{photo.img_url}}" alt="{{photo.title}}" /></a>
                                 <div class="card-body">
-                                    <h4 class="card-title"><a href="#!">Item One</a></h4>
-                                    <h5>$99.99</h5>
+                                    <h4 class="card-title"><a href="#!">{{photo.title}}</a></h4>
+                                    <h5>{{photo.price}}</h5>
                                     
                                 </div>
                                 <div class="card-footer"><small class="text-muted"><a href="#" id="checkout-button" class="btn btn-primary">Buy Now</a></small></div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100">
-                                <a href="#!"><img class="card-img-top" src="/static/img/doge1.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <h4 class="card-title"><a href="#!">Item Two</a></h4>
-                                    <h5>$99.99</h5>
-                                </div>
-                                <div class="card-footer"><small class="text-muted"><a href="#" id="checkout-button" class="btn btn-primary">Buy Now</a></small></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100">
-                                <a href="#!"><img class="card-img-top" src="/static/img/doge2.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <h4 class="card-title"><a href="#!">Item Three</a></h4>
-                                    <h5>$99.99</h5>
-                                    
-                                </div>
-                                <div class="card-footer"><small class="text-muted"><a href="#" id="checkout-button" class="btn btn-primary">Buy Now</a></small></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100">
-                                <a href="#!"><img class="card-img-top" src="/static/img/doge3.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <h4 class="card-title"><a href="#!">Item Four</a></h4>
-                                    <h5>$99.99</h5>
-                                    
-                                </div>
-                                <div class="card-footer"><small class="text-muted"><a href="#" id="checkout-button" class="btn btn-primary">Buy Now</a></small></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100">
-                                <a href="#!"><img class="card-img-top" src="/static/img/doge4.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <h4 class="card-title"><a href="#!">Item Five</a></h4>
-                                    <h5>$99.99</h5>
-                                </div>
-                                <div class="card-footer"><small class="text-muted"><a href="#" id="checkout-button" class="btn btn-primary">Buy Now</a></small></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100">
-                                <a href="#!"><img class="card-img-top" src="/static/img/doge5.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <h4 class="card-title"><a href="#!">Item Six</a></h4>
-                                    <h5>$99.99</h5>
-                                    
-                                </div>
-                                <div class="card-footer"><small class="text-muted"><a href="#" id="checkout-button" class="btn btn-primary">Buy Now</a></small></div>
-                            </div>
-                        </div>
+                        {% endfor %}
+
+                        {% else %}
+                            <p><h4>No photos in the inventory. Click <a href="/sell">Sell</a> to list a photo for sale.</h4></p>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     const checkout_public_key = '{{checkout_public_key}}';
