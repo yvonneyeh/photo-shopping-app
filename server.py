@@ -232,18 +232,7 @@ def show_photo(photo_id):
     #                         img_url=img_url)
 
 
-@app.route('/api/photos', methods=["POST"])
-def api_photo():
-    """Upload a photo."""
 
-    title = request.form.get('title')
-    desc = request.form.get('desc')
-    price = request.form.get('price')
-    img_url = request.form.get('img_url')
-
-    post = crud.create_photo(photo_id, title, desc, price, img_url)
-
-    return jsonify({'status': 'ok'})
 
 
 # -------------------- SHOPPING ROUTES -------------------- #
@@ -300,11 +289,7 @@ def upload_photo():
         return redirect('/photos')
 
 
-@app.route('/cart')
-def shopping_cart():
-    """View Shopping Cart page."""
 
-    return render_template('cart.html')
 
 
 @app.route('/stripe_pay')
@@ -366,6 +351,20 @@ def stripe_webhook():
 
     return {}
 
+
+@app.route('/cart')
+def view_cart():
+    """View items in shopping cart, total, and checkout"""
+    
+    cart_items = {}
+    subtotal = ""
+
+    if 'cart' in session:
+        cart_items = session['cart']
+        subtotal = helper.get_subtotal(cart_items)
+
+    return render_template('cart.html', cart_items=cart_items, subtotal=subtotal)
+
 # -------------------- ACCOUNT ROUTES -------------------- #
 
 @app.route('/account')
@@ -374,7 +373,7 @@ def account():
 
     return render_template('account.html')
 
-# -------------------- AJAX / JSON ROUTES -------------------- #
+# -------------------- API / AJAX / JSON ROUTES -------------------- #
 
 @app.route("/user/loggedin")
 def is_user_logged_in():
@@ -386,7 +385,66 @@ def is_user_logged_in():
     else:
         return "false"
 
+
+@app.route('/api/photos', methods=["POST"])
+def api_photo():
+    """Upload a photo."""
+
+    title = request.form.get('title')
+    desc = request.form.get('desc')
+    price = request.form.get('price')
+    img_url = request.form.get('img_url')
+
+    post = crud.create_photo(photo_id, title, desc, price, img_url)
+
+    return jsonify({'status': 'ok'})
+
+
+@app.route('/api/add-to-cart', methods=['POST'])
+def add_to_cart():
+    """ Creates a new shopping cart if one doesn't exist.
+        Adds item to cart, stored in Flask session.
+    """
+
+    if 'cart' not in session:
+        session['cart'] = {}
+
+    cart = session['cart']
+
+    id = request.form.get("id")
+    title = request.form.get("title")
+    price = float(request.form.get("price"))
+    img_url = request.form.get("img_url")
+
+    cart[id] = [title, price, img_url]
+    cart_size = str(len(cart))
+    
+    # Save the updated cart dictionary to session
+    session['cart'] = cart
+
+    return {'cart_size': cart_size}
+
+
+@app.route('/api/remove-from-cart', methods=["POST"])
+def remove_from_cart():
+    """Removes existing item from cart stored in Flask session"""
+
+    cart = session['cart']
+
+    id = request.form.get("image_id")
+
+    # Remove item from cart by its ID
+    del cart[id]
+    cart_size = str(len(cart))
+
+    # Save the updated cart dictionary to session
+    session['cart'] = cart
+
+    return {'cart_size': cart_size}
+
+
 # -------------------- RUN -------------------- #
+
 
 def connect_to_db(app, db_uri='postgresql:///photos', echo=True):
     """Connect the database to Flask app."""
