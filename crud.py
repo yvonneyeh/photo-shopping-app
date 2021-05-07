@@ -1,5 +1,7 @@
 from config import db
 from model import User, Photo, Transaction
+from datetime import date, datetime, timedelta
+
 # from werkzeug.security import generate_password_hash, check_password_hash
 
 # -------------------- USERS -------------------- #
@@ -99,10 +101,53 @@ def get_users_photos(user_id):
 
 
 def get_photo_by_id(photo_id):
+    """Return photos given its ID"""
 
     return Photo.query.filter(Photo.photo_id == photo_id).first()
 
 
+def get_photo_by_title(title):
+    """Return photos given its title"""
+
+    return Photo.query.filter(Photo.title == title).first() 
+
+
+def get_photo_id_by_title(title):
+    """Return photo's ID given its title"""
+
+    return db.session.query(Photo.photo_id).filter(Photo.title == title).first()
+
+
+# -------------------- TRANSACTIONS -------------------- #
+
+def create_transactions(photo_id, user_id, purchased=True):
+    """Creates new transaction"""
+
+    purchase_date = datetime.today()
+    trans = Transaction(photo_id=photo_id, user_id=user_id, purchase_date=purchase_date, buy_price=buy_price, purchased=purchased)
+
+    db.session.add(trans)
+    db.session.commit()
+
+    return trans
+
+
+def get_all_trans():
+    """Return all transactions."""
+
+    return Transaction.query.order_by(Transaction.trans_id).all()
+
+
+def get_trans_by_id(trans_id):
+    """Return transaction given its ID"""
+
+    return Transaction.query.filter(Transaction.trans_id == trans_id).first() 
+
+
+def get_trans_by_photo_id(photo_id):
+    """Return all transactions given its photo ID"""
+
+    return Transaction.query.filter(Transaction.photo_id == photo_id).all() 
 
 # -------------------- APP -------------------- #
 
